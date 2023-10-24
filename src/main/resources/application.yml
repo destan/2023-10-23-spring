@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:file:./demodb
+    #url: jdbc:h2:mem:demodb
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false # N+1
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    com.example: trace
