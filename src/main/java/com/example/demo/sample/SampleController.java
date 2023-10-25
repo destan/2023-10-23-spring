@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.sample;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,15 @@ class SampleController {
 
     private final SampleService sampleService;
 
+    private final SampleInterface sampleInterface;
+
     private final List<SampleUserDto> users = Collections.synchronizedList(new ArrayList<>());
+
+    @ResponseBody
+    @GetMapping("param")
+    String param() {
+        return sampleInterface.param();
+    }
 
     @ResponseBody
     @GetMapping("hello")

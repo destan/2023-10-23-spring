@@ -1,17 +1,20 @@
 package com.example.demo.user;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Validated
 @RequiredArgsConstructor
-class UserService {
+public class UserService {
 
     private final UserRepository userRepository;
 
@@ -26,8 +29,8 @@ class UserService {
         //return userRepository.findAllByDeleted(false, pageable);
     }
 
-    Optional<User> findById(Long id) {
-        return userRepository.findByIdWithPosts(id);
+    User findById(Long id) {
+        return userRepository.findByIdWithPosts(id).orElseThrow(() -> new ResourceNotFoundException(id, User.class));
     }
 
     void replace(Long id, User user) {
@@ -37,8 +40,9 @@ class UserService {
 
     @Transactional
     public void updateEmail(Long id, String email) {
-        final Optional<User> optionalUser = userRepository.findById(id);
-        final User user = optionalUser.get(); // FIXME throw exception to give 404
+        final User user = userRepository
+                                .findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException(id, User.class));
 
         user.setEmail(email);
         // userRepository.save(user); // If @Transactional is missing then we have to explicitly save the entity
@@ -50,8 +54,9 @@ class UserService {
 
     @Transactional
     public void softDelete(Long id) {
-        final Optional<User> optionalUser = userRepository.findById(id);
-        final User user = optionalUser.get(); // FIXME throw exception to give 404
+        final User user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id, User.class));
         user.setDeleted(true);
     }
 

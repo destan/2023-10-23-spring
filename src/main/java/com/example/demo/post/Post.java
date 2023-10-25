@@ -1,5 +1,6 @@
-package com.example.demo.user;
+package com.example.demo.post;
 
+import com.example.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class Post {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String title;
 
     private String content;

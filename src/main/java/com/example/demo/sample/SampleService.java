@@ -1,20 +1,24 @@
-package com.example.demo;
+package com.example.demo.sample;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 //@RequiredArgsConstructor
-class SampleService {
+class SampleService implements SampleInterface {
 
     private final Translator translator;
 
     private final RequestTime requestTime;
 
-    public SampleService(Translator translator, RequestTime requestTime) {
+    private final String param;
+
+    public SampleService(Translator translator, RequestTime requestTime, @Value("${sample-app.request-timeout}") Long param) {
         this.translator = translator;
         this.requestTime = requestTime;
+        this.param = param.toString();
         log.info("SampleService created");
     }
 
@@ -33,5 +37,8 @@ class SampleService {
         return message;
     }
 
-
+    @Override
+    public String param() {
+        return param;
+    }
 }

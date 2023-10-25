@@ -1,15 +1,20 @@
 package com.example.demo.user;
 
+import com.example.demo.validation.UserValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("users")
@@ -17,9 +22,22 @@ class UserController {
 
     private final UserService userService;
 
+    private final UserValidator userValidator;
+
+    @InitBinder
+    void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(userValidator);
+        // webDataBinder.addValidators(new UserValidator());
+    }
+
     @PostMapping
-    ResponseEntity<User> create(@RequestBody User user) {
-        //FIXME return 409 instead 500 when JdbcSQLIntegrityConstraintViolationException
+    ResponseEntity<User> create(@RequestBody @Valid User user, BindingResult bindingResult) {
+
+        // if (bindingResult.hasErrors()) {
+        //     bindingResult.getAllErrors().forEach(objectError -> log.warn(objectError.getObjectName() + " " + objectError.getDefaultMessage()));
+        //     return ResponseEntity.badRequest().build();
+        // }
+
         final User createdUser = userService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
@@ -31,15 +49,8 @@ class UserController {
 
     @GetMapping("{id}")
     ResponseEntity<User> detail(@PathVariable("id") Long id) {
-        final Optional<User> optionalUser = userService.findById(id);
-
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(optionalUser.get());
-
-        //return optionalUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        final User user = userService.findById(id);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("{id}")
@@ -63,8 +74,7 @@ class UserController {
 
         if (isHard) {
             userService.delete(id);
-        }
-        else {
+        } else {
             userService.softDelete(id);
         }
 
@@ -75,6 +85,12 @@ class UserController {
     ResponseEntity<List<User>> search(@RequestParam("searchTerm") String searchTerm) {
         return ResponseEntity.ok(userService.search(searchTerm));
     }
+
+    // @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Email already exists!")
+    // @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    // public void conflict(SQLIntegrityConstraintViolationException e) {
+    //     log.error("Hata mesaji: " + e.getMessage(), e);
+    // }
 
     record UserUpdateRequest(String email) {
 

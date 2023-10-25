@@ -1,0 +1,2 @@
+sample-app:
+  request-timeout: 99000

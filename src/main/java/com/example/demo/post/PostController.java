@@ -1,11 +1,14 @@
 package com.example.demo.post;
 
-import com.example.demo.user.Post;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("posts")
@@ -24,4 +27,17 @@ public class PostController {
         return ResponseEntity.ok(postService.findById(id));
     }
 
+    @PutMapping("{id}")
+    ResponseEntity<Post> replace(@PathVariable Long id, @RequestBody Post post) {
+
+        post.setId(id);
+
+        return ResponseEntity.ok(postService.replace(post));
+    }
+
+    // @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Email already exists!")
+    // @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    // public void conflict(SQLIntegrityConstraintViolationException e) {
+    //     log.error("Hata mesaji: " + e.getMessage(), e);
+    // }
 }
