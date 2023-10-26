@@ -24,6 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByDeletedFalse();
 
-    @Query("SELECT u FROM User u JOIN FETCH u.posts")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.posts")
     Optional<User> findByIdWithPosts(Long aLong);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.posts WHERE u.email = :email")
+    Optional<User> findByEmail(String email);
 }

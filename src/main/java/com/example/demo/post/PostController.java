@@ -1,5 +1,8 @@
 package com.example.demo.post;
 
+import com.example.demo.session.DemoSessionController;
+import com.example.demo.user.User;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,9 +20,16 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    ResponseEntity<Post> create(@RequestBody Post post, @RequestParam("userId") Long userId) {
-        final Post newPost = postService.create(post, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
+    ResponseEntity<Post> create(@RequestBody Post post, HttpSession session) {
+
+        final Object userFromSession = session.getAttribute(DemoSessionController.SESSION_USER_KEY);
+
+        if (userFromSession instanceof User user) {
+            final Post newPost = postService.create(post, user.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @GetMapping("{id}")

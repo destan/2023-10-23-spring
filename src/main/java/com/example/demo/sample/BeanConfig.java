@@ -2,10 +2,9 @@ package com.example.demo.sample;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 @Configuration
-class WebConfig {
+class BeanConfig {
 
     @Bean // <bean class="com.example.demo.sample.Translator"></bean>
     Translator translator() {

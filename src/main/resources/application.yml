@@ -19,10 +19,19 @@ spring:
       enabled: true
   profiles:
     default: dev
+#  security:
+#    user:
+#      password: s3cr3t
+
+server:
+  servlet:
+    session:
+      timeout: 60s
 
 logging:
   level:
     com.example: trace
+    org.springframework.security: trace
 
 sample-app:
   app-name: Sample app
