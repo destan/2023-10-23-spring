@@ -5,8 +5,9 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,10 @@ public class PostService {
         post.setOwner(user);
 
         return postRepository.save(post);
+    }
+
+    public List<Post> list() {
+        return postRepository.findAll(); //TODO pageable
     }
 
     public Post findById(Long id) {

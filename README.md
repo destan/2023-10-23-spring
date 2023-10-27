@@ -30,3 +30,4 @@ Running the app: `java -jar -Dspring.profiles.active=dev target/demo-0.0.1-SNAPS
 * [Spring Data JPA method naming conventions](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-keywords)
 * [HTTP status codes](https://www.webfx.com/web-development/glossary/http-status-codes/)
 * [What is Maven wrapper and how to switch using it?](https://maven.apache.org/wrapper/)
+* [Method security expressions](https://docs.spring.io/spring-security/reference/5.8/servlet/authorization/expression-based.html)

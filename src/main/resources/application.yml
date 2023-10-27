@@ -23,10 +23,11 @@ spring:
 #    user:
 #      password: s3cr3t
 
-server:
-  servlet:
-    session:
-      timeout: 60s
+
+#server:
+#  servlet:
+#    session:
+#      timeout: 60s
 
 logging:
   level:

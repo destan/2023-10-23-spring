@@ -3,6 +3,7 @@ package com.example.demo.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -26,7 +27,7 @@ public class SecurityConfig {
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers(mvc.pattern("/hello")).authenticated()
                 .requestMatchers(mvc.pattern("/demo/**")).authenticated()
-                .requestMatchers(mvc.pattern("/posts")).hasRole("ADMIN")
+                .requestMatchers(mvc.pattern(HttpMethod.POST, "/posts")).hasAuthority("ADMIN")
                 .requestMatchers(mvc.pattern("/h2-console"), mvc.pattern("/h2-console/**")).permitAll()
                 .anyRequest().permitAll()
             )

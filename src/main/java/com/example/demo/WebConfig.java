@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,4 +14,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/home").setViewName("home");
         registry.addViewController("/").setViewName("home");
     }
+
+    // https://github.com/spring-projects/spring-framework/issues/28552/
+    // @Override
+    // public void configurePathMatch(PathMatchConfigurer configurer) {
+    //     configurer.setUseTrailingSlashMatch(true);
+    // }
 }
