@@ -35,5 +35,7 @@ logging:
     org.springframework.security: trace
 
 sample-app:
+  jwt:
+    secret: c56222fa88ed489daae109e38d65afd0
   app-name: Sample app
   request-timeout: 30000

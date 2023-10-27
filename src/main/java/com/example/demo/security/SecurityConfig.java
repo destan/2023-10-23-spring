@@ -17,8 +17,8 @@ import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-@Configuration
-@EnableWebSecurity
+// @Configuration
+// @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean

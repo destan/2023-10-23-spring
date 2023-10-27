@@ -1,5 +1,6 @@
 package com.example.demo.user;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.demo.post.Post;
 import com.example.demo.validation.Tckn;
 import jakarta.persistence.*;
@@ -55,6 +56,12 @@ public class User implements UserDetails {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+    }
+
+    public User(DecodedJWT decoded) {
+        this.id = decoded.getClaim("uid").asLong();
+        this.email = decoded.getSubject();
+        //TODO get roles from JWT
     }
 
     @Override
